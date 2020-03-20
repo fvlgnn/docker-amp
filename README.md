@@ -1,2 +1,2 @@
 # docker-amp
-docker, apache, mariadb, php
+stack docker, apache, mysql, php
