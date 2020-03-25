@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  php-apache:
+    build:
+      context: ./docker/php-apache
+      args:
+        - XDEBUG=${XDEBUG}
+    ports:
+      - ${HTTP_PORT_EXPOSED}:80
+    environment:
+      APP_URL: ${APP_URL}
+      MYSQL_HOST: mysql:3306
+      MYSQL_USER: root
+      MYSQL_PASS: ${MYSQL_PASS}
+    volumes:
+      - ./web:/var/www/html:cached
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - ${MYSQL_PORT_EXPOSED}:3306
+    environment:
+      TZ: ${TIME_ZONE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS}
+      MYSQL_ROOT_HOST: "%"
+
+volumes:
+  mysql:
