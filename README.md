@@ -16,7 +16,7 @@ MySQL version: 5.7
 Environment file: `.env`
 
 `TIME_ZONE`: Time zone, using form PHP and MySQL.
-`APP_URL`: Url of your web app. Using if you use a CMS/frameweork like Wordpress, CodeIgniter, etc.
+`APP_URL`: Url of your web app. Using for CMS/Frameweork like Wordpress, CodeIgniter, etc.
 `HTTP_PORT_EXPOSED`: Exposed port of you're web app.
 `XDEBUG`: Using `1` if you want install xdegub module, otherwise using `0`.
 `MYSQL_PASS`: MySQL root password. It's not safe use this method in production but for development it's acceptable.
@@ -26,19 +26,19 @@ Environment file: `.env`
 
 Workspace foleder: `web`
 
-This is you web app folder. Put here your CMS/Framework sources.
+This is you WebApp folder. Put here your CMS/Framework/Sources.
 
-For connetcting to databse with Framework or code usign `getenv()` variables (view `index.php` source).
+For connetcting to databse with Framework or source code use `getenv()` variables (view `index.php` source).
 `$dbhost = getenv('MYSQL_HOST');`
 `$dbuser = getenv('MYSQL_USER');`
 `$dbpass = getenv('MYSQL_PASS');`
 
-For install a CMS with wizard setup using:
+For install a CMS with wizard setup use:
 hostname: `mysql`
-database: _that you created via external client_
-username: _root_
+database: _what you created by external client_
+username: `root`
 password: _the environment variable `MYSQL_PASS` as in environment file_
-port: _3306_ !it's important to declare it!
+port: `3306` _it's important to declare it!_
 
 ### Note
 
