@@ -42,7 +42,7 @@ docker-amp
 │   │   │   Dockerfile
 │   │   │   
 │   │   └───init
-│   │           dbtest.sql
+│   │           dbapp.sql
 │   │           
 │   ├───apache
 │   │   │   app.conf
@@ -110,7 +110,7 @@ For install a CMS with wizard setup use:
 
 If you haven't this folder, will be it create at the first build.
 
-`db` folder contains all your databases, don't modify the files inside it. If you need to move your project enviroment, remember to move this folder with its content.
+`db` folder contains your project's database, don't modify the files inside it. If you need to move your project enviroment, remember to move this folder with its content.
 If you don't want the databases to be inside the project folder use the docker-compose volumes.
 
 #### Logs folder: `logs`
@@ -142,6 +142,7 @@ services:
   db:
 # ...
     volumes:
+      # - ./db/${DB_NAME}:/var/lib/mysql/${DB_NAME}
       - database:/var/lib/mysql
 # ...
 
