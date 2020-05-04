@@ -13,7 +13,7 @@ services:
     networks:
       - backend
     volumes:
-      - ./app:/srv/app:cached
+      - ./app:/app:cached
       - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - ./logs/php:/usr/local/etc/php/logs
     environment:
@@ -37,7 +37,7 @@ services:
       - backend
       - frontend
     volumes:
-      - ./app:/srv/app:ro
+      - ./app:/app:ro
       - ./docker/apache/app.conf:/usr/local/apache2/conf/app.conf:ro
       # - ./docker/apache/certs:/etc/apache/certs:ro
       - ./logs/web:/var/log/apache2
