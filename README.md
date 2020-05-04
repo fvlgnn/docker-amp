@@ -1,4 +1,4 @@
-# docker-emp-slim
+# docker-amp
 Docker environement stack with APACHE, MARIADB, PHP-FPM
 
 
