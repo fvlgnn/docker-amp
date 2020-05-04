@@ -1,33 +1,72 @@
-version: "3"
+version: "3.1"
 
 services:
-  php-apache:
+
+  php:
+    container_name: ${PROJECT_NAME}_php_${VERSION_ID}
     build:
-      context: ./docker/php-apache
+      context: ./docker/php
       args:
         - XDEBUG=${XDEBUG}
     ports:
-      - ${HTTP_PORT_EXPOSED}:80
+      - 9000:9000
+    networks:
+      - backend
+    volumes:
+      - ./app:/srv/app:cached
+      - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ./logs/php:/usr/local/etc/php/logs
     environment:
       APP_URL: ${APP_URL}
-      MYSQL_HOST: mysql:3306
-      MYSQL_USER: root
-      MYSQL_PASS: ${MYSQL_PASS}
-    volumes:
-      - ./web:/var/www/html:cached
+      TIME_ZONE: ${TIME_ZONE}
+      DB_HOST: db:${DB_PORT_EXPOSED}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_NAME}
     depends_on:
-      - mysql
-
-  mysql:
-    image: mysql:5.7
-    volumes:
-      - mysql:/var/lib/mysql
+      - db
+ 
+  web:
+    container_name: ${PROJECT_NAME}_web_${VERSION_ID}
+    build:
+      context: ./docker/apache
     ports:
-      - ${MYSQL_PORT_EXPOSED}:3306
+      - ${HTTP_PORT_EXPOSED}:80
+      # - ${HTTPS_PORT_EXPOSED}:443
+    networks:
+      - backend
+      - frontend
+    volumes:
+      - ./app:/srv/app:ro
+      - ./docker/apache/app.conf:/usr/local/apache2/conf/app.conf:ro
+      # - ./docker/apache/certs:/etc/apache/certs:ro
+      - ./logs/web:/var/log/apache2
+    environment:
+      PROJECT_NAME: ${PROJECT_NAME}
+    depends_on:
+      - php
+
+  db:
+    container_name: ${PROJECT_NAME}_db_${VERSION_ID}
+    build:
+      context: ./docker/mariadb
+    ports:
+      - ${DB_PORT_EXPOSED}:3306
+    volumes:
+      - ./db:/var/lib/mysql
+      # - ./docker/mariadb/init:/docker-entrypoint-initdb.d
+      - ./logs/db:/var/log/mysql
+    networks:
+      - backend
     environment:
       TZ: ${TIME_ZONE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOTPASS}
       MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
 
-volumes:
-  mysql:
+networks:
+  frontend:
+  backend:
+
