@@ -1,5 +1,5 @@
 # docker-amp
-Docker environement stack with APACHE, MARIADB, PHP-FPM
+Docker environement stack with APACHE, MYSQL (MariaDB), PHP (FPM)
 
 
 ## Overview
