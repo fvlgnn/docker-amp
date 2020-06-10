@@ -11,8 +11,6 @@ services:
         - COMPOSER=${COMPOSER}
     ports:
       - 9000:9000
-    networks:
-      - backend
     volumes:
       - ./app:/app:cached
       - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
@@ -34,9 +32,6 @@ services:
     ports:
       - ${HTTP_PORT_EXPOSED}:80
       # - ${HTTPS_PORT_EXPOSED}:443
-    networks:
-      - backend
-      - frontend
     volumes:
       - ./app:/app:ro
       - ./docker/apache/app.conf:/usr/local/apache2/conf/app.conf:ro
@@ -57,8 +52,6 @@ services:
       - ./db:/var/lib/mysql
       # - ./docker/mariadb/init:/docker-entrypoint-initdb.d
       - ./logs/db:/var/log/mysql
-    networks:
-      - backend
     environment:
       TZ: ${TIME_ZONE}
       MYSQL_ROOT_PASSWORD: ${DB_ROOTPASS}
@@ -66,8 +59,4 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASS}
-
-networks:
-  frontend:
-  backend:
 
