@@ -32,7 +32,7 @@ docker-amp
 │   Makefile
 │   README.md
 │   
-├───app
+├───src
 │       index.php
 │       info.php
 │       
@@ -47,7 +47,7 @@ docker-amp
 |   |           zzz-operations.sql
 │   │           
 │   ├───apache
-│   │   │   app.conf
+│   │   │   webapp.conf
 │   │   │   Dockerfile
 │   │   │   
 │   │   └───certs
@@ -77,7 +77,7 @@ _Edit or view this file before building the stack_
 * `XDEBUG`: Using `1` if you want install xdegub module, otherwise using `0`.
 * `COMPOSER`: Using `1` if you want install php composer, otherwise using `0`.
 * `TIME_ZONE`: Time zone, using form PHP and MySQL. 
-* `APP_URL`: Url of your web app. Using for CMS/Frameweork like Wordpress, CodeIgniter, etc.
+* `WEBAPP_URL`: Url of your web app. Using for CMS/Frameweork like Wordpress, CodeIgniter, etc.
 * `HTTP_PORT_EXPOSED`: Exposed port of you're HTTP web app.
 * `HTTPS_PORT_EXPOSED`: Exposed port of you're HTTPS SSL web app. Required certificates.
 * `DB_PORT_EXPOSED`: Used only if you want connetc to database with external client. It's port number used for connetcting with external client like _HeidiSQL_ or _MySQL Workbench_ to create database and tables. Configure external client connetction using _host_ `127.0.0.1`, _username_ `root` whereas _password_ your `DB_ROOTPASS` and _port_ your `DB_PORT_EXPOSED` as in environment file.
@@ -89,7 +89,7 @@ _Edit or view this file before building the stack_
 
 ### Workspace
 
-#### Webapp foleder: `app`
+#### Webapp foleder: `src`
 
 This is you WebApp folder. Put here your PHP project (CMS/Framework/Sources).
 
