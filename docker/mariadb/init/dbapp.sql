@@ -12,20 +12,17 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dump database dbapp
-CREATE DATABASE IF NOT EXISTS `dbapp` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `dbapp`;
-
--- Dump table dbapp.tblone
+-- The official image runs this file against MARIADB_DATABASE.
+-- Dump table tblone
 CREATE TABLE IF NOT EXISTS `tblone` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) DEFAULT NULL,
   `description` varchar(128) DEFAULT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
--- Dump table dbapp.tbltwo
+-- Dump table tbltwo
 CREATE TABLE IF NOT EXISTS `tbltwo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `oneId` int(11) NOT NULL,
@@ -33,12 +30,12 @@ CREATE TABLE IF NOT EXISTS `tbltwo` (
   `unixtime` int(11) NOT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
--- Dump della struttura di tabella dbapp.users
+-- Dump table users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `permit` int(1) NOT NULL COMMENT,
+  `permit` tinyint NOT NULL,
   `email` varchar(64) NOT NULL,
   `password` varchar(128) NOT NULL,
   `name` varchar(64) DEFAULT NULL,
@@ -46,9 +43,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4;
 
--- Dump dei dati della tabella dbapp.users: 1 rows
+-- Sample data for users (disabled)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 --INSERT INTO `users` (`id`, `permit`, `email`, `password`, `name`, `surname`) SELECT 1, 9, 'admin@domain.ltd', '5f4dcc3b5aa765d61d8327deb882cf99', 'Name', 'Surname' FROM DUAL WHERE NOT EXISTS (SELECT * FROM `users`) LIMIT 1;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;

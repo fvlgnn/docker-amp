@@ -1,62 +1,54 @@
-version: "3.1"
-
 services:
-
   php:
-    container_name: ${PROJECT_NAME}_php_${VERSION_ID}
     build:
       context: ./docker/php
       args:
-        - XDEBUG=${XDEBUG}
-        - COMPOSER=${COMPOSER}
-    ports:
-      - 9000:9000
+        XDEBUG: ${XDEBUG:-0}
+        COMPOSER: ${COMPOSER:-0}
     volumes:
-      - ./src:/src:cached
+      - ./src:/src
       - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-      - ./logs/php:/usr/local/etc/php/logs
     environment:
-      WEBAPP_URL: ${WEBAPP_URL}
-      TIME_ZONE: ${TIME_ZONE}
-      DB_HOST: db:${DB_PORT_EXPOSED}
-      DB_USER: ${DB_USER}
-      DB_PASS: ${DB_PASS}
-      DB_NAME: ${DB_NAME}
+      WEBAPP_URL: ${WEBAPP_URL:-http://localhost:8080/}
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-dbuser}
+      DB_PASS: ${DB_PASS:?Set DB_PASS in .env}
+      DB_NAME: ${DB_NAME:-dbapp}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
  
   web:
-    container_name: ${PROJECT_NAME}_web_${VERSION_ID}
     build:
       context: ./docker/apache
     ports:
-      - ${HTTP_PORT_EXPOSED}:80
-      # - ${HTTPS_PORT_EXPOSED}:443
+      - "${HTTP_PORT_EXPOSED:-8080}:80"
     volumes:
       - ./src:/src:ro
       - ./docker/apache/webapp.conf:/usr/local/apache2/conf/webapp.conf:ro
-      # - ./docker/apache/certs:/etc/apache/certs:ro
-      - ./logs/web:/var/log/apache2
-    environment:
-      PROJECT_NAME: ${PROJECT_NAME}
     depends_on:
-      - php
+      php:
+        condition: service_started
 
   db:
-    container_name: ${PROJECT_NAME}_db_${VERSION_ID}
     build:
       context: ./docker/mariadb
     ports:
-      - ${DB_PORT_EXPOSED}:3306
+      - "127.0.0.1:${DB_PORT_EXPOSED:-3306}:3306"
     volumes:
       - ./db:/var/lib/mysql
-      # - ./docker/mariadb/init:/docker-entrypoint-initdb.d
-      - ./logs/db:/var/log/mysql
+      # Enable to import SQL files when a new, empty database is created:
+      # - ./docker/mariadb/init:/docker-entrypoint-initdb.d:ro
     environment:
-      TZ: ${TIME_ZONE}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOTPASS}
-      MYSQL_ROOT_HOST: "%"
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASS}
-
+      TZ: ${TIME_ZONE:-UTC}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOTPASS:?Set DB_ROOTPASS in .env}
+      MARIADB_DATABASE: ${DB_NAME:-dbapp}
+      MARIADB_USER: ${DB_USER:-dbuser}
+      MARIADB_PASSWORD: ${DB_PASS:?Set DB_PASS in .env}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s

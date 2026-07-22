@@ -1,5 +1,6 @@
 # GIT
 .git
+.env
 
 # APP Files
 node_modules
@@ -7,8 +8,7 @@ node_modules
 build/Release
 npm-debug.log
 .DS_Store
-composer.lock
-package-lock.json
+# Lock files should normally be committed for applications.
 bkp
 *.bkp
 tmp
@@ -38,4 +38,3 @@ logs.log.*
 *.exe
 *.out
 *.app
-

@@ -1,35 +1,30 @@
+.PHONY: install start stop remove purge validate bash-db bash-php bash-web
+
 install:
 	@mkdir -p ./db
-	@mkdir -p ./logs/db
-	@mkdir -p ./logs/php
-	@mkdir -p ./logs/web
-	@docker-compose up -d --build
+	@docker compose up -d --build
 
 start:
-	@docker-compose start
+	@docker compose start
 
 stop:
-	@docker-compose stop
+	@docker compose stop
 
 remove:
-	@docker-compose down
+	@docker compose down
 
 purge:
-	@docker-compose down
+	@docker compose down
 	@rm -rf ./db/*
-	@rm -rf ./logs/db/*
-	@rm -rf ./logs/php/*
-	@rm -rf ./logs/web/*
 
 validate:
-	@docker-compose config
+	@docker compose config
 
 bash-db:
-	@docker-compose exec db bash
+	@docker compose exec db bash
 
 bash-php:
-	@docker-compose exec php bash
+	@docker compose exec php bash
 
 bash-web:
-	@docker-compose exec web bash
-
+	@docker compose exec web bash
